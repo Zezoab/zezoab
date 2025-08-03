@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head><title>MetaMask Test</title></head>
+  <body>
+    <h1 id="status">Checking MetaMask...</h1>
+    <script>
+      const status = document.getElementById("status");
+      if (typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask) {
+        status.textContent = "✅ MetaMask detected!";
+      } else {
+        status.textContent = "❌ MetaMask not found.";
+      }
+    </script>
+  </body>
+</html>
