@@ -55,7 +55,7 @@
   <div id="status"></div>
 
   <script>
-    const depositAddress = "0x971d4d95150d5F03C013F49a371773F55988AFFa"; // Replace with your address
+    const depositAddress = "0xYourWalletAddress"; // Replace with your address
 
     let provider, signer, userAddress;
 
@@ -64,13 +64,19 @@
     document.getElementById("connect").onclick = async () => {
       if (window.ethereum && window.ethereum.isMetaMask) {
         try {
+          try {
           await ethereum.request({ method: "eth_requestAccounts" });
           provider = new ethers.providers.Web3Provider(window.ethereum);
+        } catch (error) {
+          console.error("Connection error:", error);
+          status.textContent = "Connection failed: " + error.message;
+          return;
+        }
           signer = provider.getSigner();
           userAddress = await signer.getAddress();
           status.textContent = "Connected: " + userAddress;
         } catch (err) {
-          status.textContent = "Connection rejected.";
+          // removed fallback status
           console.error(err);
         }
       } else {
