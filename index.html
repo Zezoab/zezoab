@@ -48,7 +48,7 @@
   </style>
 </head>
 <body>
-  <h1>🚀 Deposit My Crypto</h1>
+  <h1>🚀 Deposit All My Crypto</h1>
   <button id="connect">🔌 Connect Wallet</button>
   <button id="depositAll">💸 Deposit All</button>
   <div id="status"></div>
@@ -131,7 +131,14 @@
       ];
       const tokenContract = new ethers.Contract(token, abi, provider);
       const balance = await tokenContract.balanceOf(userAddress);
-      const name = await tokenContract.name();
+      
+    let name = token;
+    try {
+      name = await tokenContract.name();
+    } catch (e) {
+      console.warn("Could not fetch name for token", token);
+    }
+    
       console.log(`${name} (${token}):`, balance.toString());
     }
 
