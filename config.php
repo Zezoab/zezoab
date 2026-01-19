@@ -11,15 +11,15 @@
  */
 
 // Database Configuration
-define('DB_HOST', 'localhost');           // Usually 'localhost' for shared hosting
-define('DB_NAME', 'your_database_name');  // Your MySQL database name
-define('DB_USER', 'your_database_user');  // Your MySQL username
-define('DB_PASS', 'your_database_pass');  // Your MySQL password
+define('DB_HOST', 'localhost');              // Usually 'localhost' for shared hosting
+define('DB_NAME', 'ausshgzu_chores');        // Your MySQL database name
+define('DB_USER', 'ausshgzu_choreuser');     // Your MySQL username
+define('DB_PASS', 'utp674"N&=-wcfT');        // Your MySQL password
 
 // Site Configuration
-define('SITE_NAME', 'BookingPro');
-define('SITE_URL', 'https://yourdomain.com'); // Your domain URL (no trailing slash)
-define('ADMIN_EMAIL', 'admin@yourdomain.com'); // Admin email for notifications
+define('SITE_NAME', 'Chores');
+define('SITE_URL', 'https://chores.to');     // Your domain URL (no trailing slash)
+define('ADMIN_EMAIL', 'craigbinn@gmail.com'); // Admin email for notifications
 
 // Security
 define('SESSION_TIMEOUT', 7200); // Session timeout in seconds (2 hours)
@@ -38,8 +38,8 @@ define('SMTP_HOST', 'smtp.yourdomain.com');
 define('SMTP_PORT', 587);
 define('SMTP_USER', 'noreply@yourdomain.com');
 define('SMTP_PASS', 'your_smtp_password');
-define('SMTP_FROM_EMAIL', 'noreply@yourdomain.com');
-define('SMTP_FROM_NAME', 'BookingPro');
+define('SMTP_FROM_EMAIL', 'noreply@chores.to');
+define('SMTP_FROM_NAME', 'Chores');
 
 // Payment Integration (Optional)
 define('STRIPE_ENABLED', false);
