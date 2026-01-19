@@ -76,7 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $success = 'Working hours updated successfully';
     } elseif ($action === 'add_exception') {
+        $dateMode = sanitize($_POST['date_mode'] ?? 'single');
         $exceptionDate = sanitize($_POST['exception_date'] ?? '');
+        $exceptionEndDate = sanitize($_POST['exception_end_date'] ?? '');
         $exceptionType = sanitize($_POST['exception_type'] ?? 'unavailable');
         $startTime = sanitize($_POST['exception_start_time'] ?? null);
         $endTime = sanitize($_POST['exception_end_time'] ?? null);
@@ -85,19 +87,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($exceptionDate)) {
             $error = 'Please select a date';
         } else {
-            $inserted = $db->insert('staff_availability_exceptions', [
-                'staff_id' => $staffId,
-                'exception_date' => $exceptionDate,
-                'exception_type' => $exceptionType,
-                'start_time' => $exceptionType === 'custom_hours' ? $startTime : null,
-                'end_time' => $exceptionType === 'custom_hours' ? $endTime : null,
-                'reason' => $reason
-            ]);
+            // Determine date range
+            $datesToBlock = [];
 
-            if ($inserted) {
-                $success = 'Exception added successfully';
+            if ($dateMode === 'range' && !empty($exceptionEndDate)) {
+                // Date range mode
+                $startDate = new DateTime($exceptionDate);
+                $endDate = new DateTime($exceptionEndDate);
+
+                if ($endDate < $startDate) {
+                    $error = 'End date must be after start date';
+                } else {
+                    $interval = new DateInterval('P1D');
+                    $dateRange = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
+
+                    foreach ($dateRange as $date) {
+                        $datesToBlock[] = $date->format('Y-m-d');
+                    }
+                }
             } else {
-                $error = 'Failed to add exception';
+                // Single date mode
+                $datesToBlock[] = $exceptionDate;
+            }
+
+            if (!$error && !empty($datesToBlock)) {
+                $insertedCount = 0;
+
+                foreach ($datesToBlock as $dateToBlock) {
+                    $inserted = $db->insert('staff_availability_exceptions', [
+                        'staff_id' => $staffId,
+                        'exception_date' => $dateToBlock,
+                        'exception_type' => $exceptionType,
+                        'start_time' => $exceptionType === 'custom_hours' ? $startTime : null,
+                        'end_time' => $exceptionType === 'custom_hours' ? $endTime : null,
+                        'reason' => $reason
+                    ]);
+
+                    if ($inserted) {
+                        $insertedCount++;
+                    }
+                }
+
+                if ($insertedCount > 0) {
+                    if ($insertedCount === 1) {
+                        $success = 'Exception added successfully';
+                    } else {
+                        $success = "$insertedCount exceptions added successfully";
+                    }
+                } else {
+                    $error = 'Failed to add exceptions';
+                }
             }
         }
     } elseif ($action === 'delete_exception') {
@@ -289,10 +328,30 @@ $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
 
                         <h3>Add New Exception</h3>
 
+                        <div class="form-group">
+                            <label>Date Selection</label>
+                            <div style="display: flex; gap: 1.5rem;">
+                                <label class="checkbox-label" style="margin-bottom: 0;">
+                                    <input type="radio" name="date_mode" value="single" checked onchange="toggleDateMode()">
+                                    <span>Single Date</span>
+                                </label>
+                                <label class="checkbox-label" style="margin-bottom: 0;">
+                                    <input type="radio" name="date_mode" value="range" onchange="toggleDateMode()">
+                                    <span>Date Range</span>
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="exception_date">Date *</label>
+                                <label for="exception_date"><span id="dateLabel">Date</span> *</label>
                                 <input type="date" id="exception_date" name="exception_date" required
+                                       min="<?php echo date('Y-m-d'); ?>">
+                            </div>
+
+                            <div class="form-group" id="endDateGroup" style="display: none;">
+                                <label for="exception_end_date">End Date *</label>
+                                <input type="date" id="exception_end_date" name="exception_end_date"
                                        min="<?php echo date('Y-m-d'); ?>">
                             </div>
 
@@ -321,10 +380,10 @@ $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
 
                         <div class="form-group">
                             <label for="reason">Reason (optional)</label>
-                            <input type="text" id="reason" name="reason" placeholder="e.g., Vacation, Doctor appointment">
+                            <input type="text" id="reason" name="reason" placeholder="e.g., Vacation, Doctor appointment, Holiday week">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Add Exception</button>
+                        <button type="submit" class="btn btn-primary">Add <span id="exceptionCount">Exception</span></button>
                     </form>
 
                     <!-- List Exceptions -->
@@ -378,7 +437,12 @@ $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
                 <ul>
                     <li><strong>Schedule Pattern:</strong> Choose if they work every week or alternating weeks</li>
                     <li><strong>Weekly Hours:</strong> Set which days and what times they're available</li>
-                    <li><strong>Exceptions:</strong> Block specific dates for vacation, time off, or special hours</li>
+                    <li><strong>Exceptions:</strong> Block specific dates for vacation, time off, or special hours
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li><strong>Single Date:</strong> Block one specific day</li>
+                            <li><strong>Date Range:</strong> Block multiple consecutive days (e.g., week-long vacation)</li>
+                        </ul>
+                    </li>
                     <li>The booking system will automatically show only available times based on these settings</li>
                 </ul>
             </div>
@@ -415,6 +479,26 @@ $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
                 customHours.style.display = 'none';
                 document.getElementById('exception_start_time').required = false;
                 document.getElementById('exception_end_time').required = false;
+            }
+        }
+
+        function toggleDateMode() {
+            const dateMode = document.querySelector('input[name="date_mode"]:checked').value;
+            const endDateGroup = document.getElementById('endDateGroup');
+            const endDateInput = document.getElementById('exception_end_date');
+            const dateLabel = document.getElementById('dateLabel');
+            const exceptionCount = document.getElementById('exceptionCount');
+
+            if (dateMode === 'range') {
+                endDateGroup.style.display = 'block';
+                endDateInput.required = true;
+                dateLabel.textContent = 'Start Date';
+                exceptionCount.textContent = 'Exceptions';
+            } else {
+                endDateGroup.style.display = 'none';
+                endDateInput.required = false;
+                dateLabel.textContent = 'Date';
+                exceptionCount.textContent = 'Exception';
             }
         }
 
