@@ -1,0 +1,86 @@
+========================================
+BookingPro - Quick Installation Guide
+========================================
+
+REQUIREMENTS:
+- PHP 7.4 or higher
+- MySQL 5.7 or higher
+- Web hosting (NameCheap shared hosting works perfectly)
+
+INSTALLATION STEPS:
+
+1. CREATE DATABASE
+   - Log into your hosting cPanel
+   - Create a new MySQL database
+   - Create a database user with strong password
+   - Grant ALL PRIVILEGES to the user on the database
+   - Write down: database name, username, password
+
+2. IMPORT DATABASE
+   - Go to phpMyAdmin in cPanel
+   - Select your database
+   - Click Import
+   - Upload database.sql
+   - Click Go
+
+3. UPLOAD FILES
+   - Upload all files to your web directory (public_html)
+   - Maintain the folder structure
+
+4. CONFIGURE
+   - Edit config.php
+   - Update these values:
+     * DB_HOST (usually 'localhost')
+     * DB_NAME (your database name)
+     * DB_USER (your database username)
+     * DB_PASS (your database password)
+     * SITE_URL (your website URL)
+     * ADMIN_EMAIL (your email)
+   - Save config.php
+
+5. CREATE FOLDERS
+   - Create folder: uploads/logos/
+   - Set permissions to 755
+
+6. ACCESS YOUR SITE
+   - Visit https://yourdomain.com
+   - Click "Get Started Free"
+   - Register your business account
+   - Start adding staff and services!
+
+FIRST STEPS AFTER INSTALLATION:
+
+1. Add staff members (Staff Management)
+2. Create your services (Services Management)
+3. Customize your branding (Settings)
+4. Set working hours (Settings)
+5. Share your booking link!
+
+YOUR BOOKING URL:
+https://yourdomain.com/book.php?slug=your-business-slug
+
+TROUBLESHOOTING:
+
+Problem: "Database connection failed"
+Solution: Check config.php credentials are correct
+
+Problem: Can't upload logo
+Solution: Ensure uploads/logos/ folder exists with write permissions
+
+Problem: Booking page doesn't show services
+Solution: Make sure services and staff are marked as "Active"
+
+SUPPORT:
+Check README.md for detailed documentation
+
+COST:
+- Commission: $0 (ZERO)
+- Hidden Fees: $0 (ZERO)
+- Your hosting: ~$3-10/month
+- YOU KEEP 100% OF YOUR REVENUE!
+
+Compare to Fresha's 20% commission that costs businesses hundreds per month!
+
+========================================
+Thank you for choosing BookingPro!
+========================================

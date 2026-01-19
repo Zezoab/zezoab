@@ -1,0 +1,82 @@
+# BookingPro .htaccess
+# Apache configuration for BookingPro
+
+# Enable RewriteEngine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect www to non-www (optional, remove if you prefer www)
+    # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    # RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+    # Force HTTPS (recommended for production)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Clean URLs for booking pages (optional)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^book/([a-zA-Z0-9-]+)$ book.php?slug=$1 [L,QSA]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Prevent MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect config file
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protect database file
+<Files "database.sql">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Enable compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# PHP Settings (adjust as needed)
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Error Pages (create these files if you want custom error pages)
+# ErrorDocument 404 /404.php
+# ErrorDocument 500 /500.php
