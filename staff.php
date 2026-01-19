@@ -254,6 +254,7 @@ if (isset($_GET['edit'])) {
                                                 </span>
                                             </td>
                                             <td class="table-actions">
+                                                <a href="staff-schedule.php?staff_id=<?php echo $staff['id']; ?>" class="btn btn-sm btn-primary">📅 Schedule</a>
                                                 <a href="?edit=<?php echo $staff['id']; ?>" class="btn btn-sm btn-outline">Edit</a>
                                                 <form method="POST" action="" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this staff member?');">
                                                     <input type="hidden" name="action" value="delete">

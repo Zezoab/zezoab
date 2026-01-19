@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         <?php if ($success): ?>
             <div class="alert alert-success booking-success">
                 <h2>✅ <?php echo $success; ?></h2>
-                <a href="book.php?slug=<?php echo $slug; ?>" class="btn btn-primary">Book Another Appointment</a>
+                <a href="<?php echo SITE_URL; ?>/book.php?slug=<?php echo $slug; ?>" class="btn btn-primary">Book Another Appointment</a>
             </div>
         <?php else: ?>
             <?php if ($error): ?>

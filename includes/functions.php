@@ -141,23 +141,67 @@ function isTimeAvailable($db, $staffId, $date, $startTime, $endTime, $excludeApp
 
 /**
  * Get available time slots for booking
+ * Enhanced with flexible scheduling patterns
  */
 function getAvailableSlots($db, $staffId, $date, $serviceDuration) {
-    // Get working hours for this day
-    $dayOfWeek = date('w', strtotime($date));
-
-    $workingHours = $db->fetchOne(
-        "SELECT * FROM working_hours
-         WHERE (staff_id = :staff_id OR business_id IN (SELECT business_id FROM staff WHERE id = :staff_id2))
-         AND day_of_week = :day
-         AND is_closed = 0
-         ORDER BY staff_id DESC
-         LIMIT 1",
-        ['staff_id' => $staffId, 'staff_id2' => $staffId, 'day' => $dayOfWeek]
+    // Get staff info to check schedule pattern
+    $staff = $db->fetchOne(
+        "SELECT schedule_pattern, biweekly_week FROM staff WHERE id = ?",
+        [$staffId]
     );
 
-    if (!$workingHours) {
+    if (!$staff) {
         return [];
+    }
+
+    // Check if staff is working this week (for biweekly schedules)
+    if (isset($staff['schedule_pattern']) && $staff['schedule_pattern'] === 'biweekly') {
+        $weekNumber = date('W', strtotime($date));
+        $currentWeekInPattern = ($weekNumber % 2) + 1; // 1 or 2
+
+        // If staff works on different week, return no slots
+        if ($currentWeekInPattern != $staff['biweekly_week']) {
+            return [];
+        }
+    }
+
+    // Check for exceptions on this date
+    $exception = $db->fetchOne(
+        "SELECT * FROM staff_availability_exceptions
+         WHERE staff_id = ? AND exception_date = ?",
+        [$staffId, $date]
+    );
+
+    if ($exception) {
+        if ($exception['exception_type'] === 'unavailable') {
+            // Staff is completely unavailable on this date
+            return [];
+        } elseif ($exception['exception_type'] === 'custom_hours') {
+            // Use custom hours for this date
+            $workingHours = [
+                'start_time' => $exception['start_time'],
+                'end_time' => $exception['end_time']
+            ];
+        }
+    }
+
+    // If no exception with custom hours, get regular working hours
+    if (!isset($workingHours)) {
+        $dayOfWeek = date('w', strtotime($date));
+
+        $workingHours = $db->fetchOne(
+            "SELECT * FROM working_hours
+             WHERE (staff_id = :staff_id OR business_id IN (SELECT business_id FROM staff WHERE id = :staff_id2))
+             AND day_of_week = :day
+             AND is_closed = 0
+             ORDER BY staff_id DESC
+             LIMIT 1",
+            ['staff_id' => $staffId, 'staff_id2' => $staffId, 'day' => $dayOfWeek]
+        );
+
+        if (!$workingHours) {
+            return [];
+        }
     }
 
     // Get all time slots
