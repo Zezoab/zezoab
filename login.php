@@ -16,19 +16,30 @@ $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = sanitize($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if (empty($email) || empty($password)) {
-        $error = 'Please fill in all fields';
+    // Validate CSRF token
+    if (!csrf_validate()) {
+        $error = 'Security validation failed. Please refresh the page and try again.';
     } else {
-        $result = $auth->login($email, $password);
+        $email = sanitize($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
 
-        if ($result['success']) {
-            header('Location: dashboard.php');
-            exit;
+        if (empty($email) || empty($password)) {
+            $error = 'Please fill in all fields';
         } else {
-            $error = $result['message'];
+            $result = $auth->login($email, $password);
+
+            if ($result['success']) {
+                // Check if email verification is required
+                if (REQUIRE_EMAIL_VERIFICATION && !$auth->isEmailVerified()) {
+                    $auth->logout();
+                    $error = 'Please verify your email address before logging in. <a href="resend-verification.php">Resend verification email</a>';
+                } else {
+                    header('Location: dashboard.php');
+                    exit;
+                }
+            } else {
+                $error = $result['message'];
+            }
         }
     }
 }
@@ -59,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="POST" action="" class="auth-form">
+                <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" required

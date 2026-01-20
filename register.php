@@ -21,28 +21,45 @@ $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = sanitize($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
-    $businessName = sanitize($_POST['business_name'] ?? '');
-    $businessType = sanitize($_POST['business_type'] ?? '');
-
-    if (empty($email) || empty($password) || empty($businessName)) {
-        $error = 'Please fill in all required fields';
-    } elseif ($password !== $confirmPassword) {
-        $error = 'Passwords do not match';
+    // Validate CSRF token
+    if (!csrf_validate()) {
+        $error = 'Security validation failed. Please refresh the page and try again.';
     } else {
+        $email = sanitize($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+        $businessName = sanitize($_POST['business_name'] ?? '');
+        $businessType = sanitize($_POST['business_type'] ?? '');
+
+        if (empty($email) || empty($password) || empty($businessName)) {
+            $error = 'Please fill in all required fields';
+        } elseif ($password !== $confirmPassword) {
+            $error = 'Passwords do not match';
+        } else {
         $result = $auth->register($email, $password, $businessName, $businessType);
 
         if ($result['success']) {
-            $success = $result['message'];
-            // Auto-login after registration
-            $auth->login($email, $password);
-            header('Location: dashboard.php?welcome=1');
-            exit;
+            $businessId = $result['business_id'];
+
+            // Send verification email if required
+            if (REQUIRE_EMAIL_VERIFICATION) {
+                $verificationResult = $auth->sendVerificationEmail($businessId, $email, $businessName);
+
+                if ($verificationResult['success']) {
+                    $success = 'Registration successful! Please check your email to verify your account.';
+                } else {
+                    $success = 'Registration successful, but we couldn\'t send the verification email. Please contact support.';
+                }
+            } else {
+                // Auto-login after registration if verification not required
+                $auth->login($email, $password);
+                header('Location: dashboard.php?welcome=1');
+                exit;
+            }
         } else {
             $error = $result['message'];
         }
+    }
     }
 }
 ?>
@@ -72,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="POST" action="" class="auth-form">
+                <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <label for="business_name">Business Name *</label>
                     <input type="text" id="business_name" name="business_name" required

@@ -41,20 +41,63 @@ $error = '';
 
 // Handle booking submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'book') {
-    $firstName = sanitize($_POST['first_name'] ?? '');
-    $lastName = sanitize($_POST['last_name'] ?? '');
-    $email = sanitize($_POST['email'] ?? '');
-    $phone = sanitize($_POST['phone'] ?? '');
-    $serviceId = (int)($_POST['service_id'] ?? 0);
-    $staffId = (int)($_POST['staff_id'] ?? 0);
-    $appointmentDate = sanitize($_POST['appointment_date'] ?? '');
-    $startTime = sanitize($_POST['start_time'] ?? '');
-    $notes = sanitize($_POST['notes'] ?? '');
-    $referralSource = sanitize($_POST['referral_source'] ?? '');
-
-    if (empty($firstName) || empty($lastName) || empty($email) || empty($serviceId) || empty($staffId) || empty($appointmentDate) || empty($startTime)) {
-        $error = 'Please fill in all required fields';
+    // Validate CSRF token
+    if (!csrf_validate()) {
+        $error = 'Security validation failed. Please refresh the page and try again.';
     } else {
+        $firstName = sanitize($_POST['first_name'] ?? '');
+        $lastName = sanitize($_POST['last_name'] ?? '');
+        $email = sanitize($_POST['email'] ?? '');
+        $phone = sanitize($_POST['phone'] ?? '');
+        $serviceId = (int)($_POST['service_id'] ?? 0);
+        $staffId = (int)($_POST['staff_id'] ?? 0);
+        $appointmentDate = sanitize($_POST['appointment_date'] ?? '');
+        $startTime = sanitize($_POST['start_time'] ?? '');
+        $notes = sanitize($_POST['notes'] ?? '');
+        $referralSource = sanitize($_POST['referral_source'] ?? '');
+
+        // Comprehensive validation
+        $errors = [];
+
+        if (empty($firstName) || empty($lastName)) {
+            $errors[] = 'First and last name are required';
+        } elseif (!isValidName($firstName) || !isValidName($lastName)) {
+            $errors[] = 'Names must contain only letters, spaces, hyphens, and apostrophes (2-50 characters)';
+        }
+
+        if (empty($email)) {
+            $errors[] = 'Email is required';
+        } elseif (!isValidEmail($email)) {
+            $errors[] = 'Please enter a valid email address';
+        }
+
+        if (!empty($phone) && !isValidPhone($phone)) {
+            $errors[] = 'Please enter a valid phone number';
+        }
+
+        if (empty($serviceId) || !isValidId($serviceId)) {
+            $errors[] = 'Please select a valid service';
+        }
+
+        if (empty($staffId) || !isValidId($staffId)) {
+            $errors[] = 'Please select a valid staff member';
+        }
+
+        if (empty($appointmentDate)) {
+            $errors[] = 'Appointment date is required';
+        } elseif (!isValidFutureDate($appointmentDate)) {
+            $errors[] = 'Please select a valid future date';
+        }
+
+        if (empty($startTime)) {
+            $errors[] = 'Appointment time is required';
+        } elseif (!isValidTime($startTime)) {
+            $errors[] = 'Please select a valid time';
+        }
+
+        if (!empty($errors)) {
+            $error = implode('<br>', $errors);
+        } else {
         // Get service details
         $service = $db->fetchOne(
             "SELECT * FROM services WHERE id = ? AND business_id = ?",
@@ -131,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             }
         }
     }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -174,6 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
             <form method="POST" action="" class="booking-form" id="bookingForm">
                 <input type="hidden" name="action" value="book">
+                <?php echo csrf_field(); ?>
 
                 <div class="form-step active" data-step="1">
                     <h2>Select a Service</h2>

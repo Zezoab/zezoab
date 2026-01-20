@@ -1,0 +1,38 @@
+# Environment Configuration
+.env
+
+# Uploaded Files
+uploads/*
+!uploads/.gitkeep
+
+# Log Files
+logs/*
+!logs/.gitkeep
+*.log
+
+# Backup Files
+backups/*
+!backups/.gitkeep
+
+# System Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary Files
+tmp/*
+!tmp/.gitkeep
+cache/*
+!cache/.gitkeep
+
+# Composer
+/vendor/
+composer.lock
+
+# Node (if you add a build system later)
+node_modules/
+package-lock.json

@@ -8,6 +8,17 @@ class Database {
     private static $instance = null;
     private $conn;
 
+    // Whitelist of valid table names (SQL injection prevention)
+    private $validTables = [
+        'businesses', 'staff', 'services', 'staff_services', 'working_hours',
+        'clients', 'appointments', 'blocked_times', 'notifications', 'reviews',
+        'email_templates', 'settings', 'recurring_appointments', 'waitlist',
+        'packages', 'client_packages', 'loyalty_points', 'loyalty_transactions',
+        'loyalty_rewards', 'gift_certificates', 'appointment_services',
+        'group_classes', 'class_participants', 'message_templates', 'pricing_rules',
+        'staff_availability_exceptions', 'payments', 'payment_methods'
+    ];
+
     private function __construct() {
         try {
             $this->conn = new PDO(
@@ -34,6 +45,17 @@ class Database {
 
     public function getConnection() {
         return $this->conn;
+    }
+
+    /**
+     * Validate table name against whitelist
+     */
+    private function validateTable($table) {
+        if (!in_array($table, $this->validTables, true)) {
+            error_log("Invalid table name attempted: $table");
+            throw new InvalidArgumentException("Invalid table name: $table");
+        }
+        return true;
     }
 
     /**
@@ -70,6 +92,8 @@ class Database {
      * Insert a record and return the ID
      */
     public function insert($table, $data) {
+        $this->validateTable($table);
+
         $keys = array_keys($data);
         $fields = implode(', ', $keys);
         $placeholders = ':' . implode(', :', $keys);
@@ -86,6 +110,8 @@ class Database {
      * Update a record
      */
     public function update($table, $data, $where, $whereParams = []) {
+        $this->validateTable($table);
+
         $set = [];
         foreach ($data as $key => $value) {
             $set[] = "$key = :$key";
@@ -102,6 +128,8 @@ class Database {
      * Delete a record
      */
     public function delete($table, $where, $params = []) {
+        $this->validateTable($table);
+
         $sql = "DELETE FROM $table WHERE $where";
         return $this->query($sql, $params) !== false;
     }

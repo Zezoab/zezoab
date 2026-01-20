@@ -4,6 +4,30 @@
  * Helper functions used throughout the application
  */
 
+// Load CSRF protection
+require_once __DIR__ . '/CSRF.php';
+
+/**
+ * Generate CSRF token field for forms
+ */
+function csrf_field() {
+    return CSRF::getTokenField();
+}
+
+/**
+ * Generate CSRF token
+ */
+function csrf_token() {
+    return CSRF::generateToken();
+}
+
+/**
+ * Validate CSRF token
+ */
+function csrf_validate($token = null) {
+    return CSRF::validateToken($token);
+}
+
 /**
  * Sanitize input
  */
@@ -19,6 +43,55 @@ function sanitize($input) {
  */
 function isValidEmail($email) {
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+}
+
+/**
+ * Validate phone number (flexible international format)
+ */
+function isValidPhone($phone) {
+    // Allow: +1234567890, +1 (234) 567-8900, 1234567890, etc.
+    $phone = preg_replace('/[^0-9+]/', '', $phone);
+    return strlen($phone) >= 10 && strlen($phone) <= 15;
+}
+
+/**
+ * Validate date format (Y-m-d) and ensure it's not in the past
+ */
+function isValidFutureDate($date) {
+    $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+    if (!$dateObj || $dateObj->format('Y-m-d') !== $date) {
+        return false;
+    }
+    // Check if date is today or in the future
+    $today = new DateTime();
+    $today->setTime(0, 0, 0);
+    return $dateObj >= $today;
+}
+
+/**
+ * Validate time format (H:i or H:i:s)
+ */
+function isValidTime($time) {
+    $timeObj = DateTime::createFromFormat('H:i:s', $time);
+    if ($timeObj && $timeObj->format('H:i:s') === $time) {
+        return true;
+    }
+    $timeObj = DateTime::createFromFormat('H:i', $time);
+    return $timeObj && $timeObj->format('H:i') === $time;
+}
+
+/**
+ * Validate integer ID (positive integer)
+ */
+function isValidId($id) {
+    return is_numeric($id) && (int)$id > 0;
+}
+
+/**
+ * Validate name (2-50 characters, letters, spaces, hyphens, apostrophes)
+ */
+function isValidName($name) {
+    return preg_match("/^[a-zA-Z\s'\-]{2,50}$/", $name);
 }
 
 /**

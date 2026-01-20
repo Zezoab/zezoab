@@ -5,50 +5,66 @@
  * INSTALLATION INSTRUCTIONS:
  * 1. Create a MySQL database in your NameCheap cPanel
  * 2. Import database.sql into your database
- * 3. Update the database credentials below
+ * 3. Copy .env.example to .env and update with your credentials
  * 4. Upload all files to your web hosting
  * 5. Access index.php in your browser
  */
 
+// Load environment variables
+require_once __DIR__ . '/includes/env-loader.php';
+loadEnv();
+
 // Database Configuration
-define('DB_HOST', 'localhost');              // Usually 'localhost' for shared hosting
-define('DB_NAME', 'ausshgzu_chores');        // Your MySQL database name
-define('DB_USER', 'ausshgzu_choreuser');     // Your MySQL username
-define('DB_PASS', 'utp674"N&=-wcfT');        // Your MySQL password
+define('DB_HOST', env('DB_HOST', 'localhost'));
+define('DB_NAME', env('DB_NAME', ''));
+define('DB_USER', env('DB_USER', ''));
+define('DB_PASS', env('DB_PASS', ''));
 
 // Site Configuration
-define('SITE_NAME', 'Chores');
-define('SITE_URL', 'https://chores.to');     // Your domain URL (no trailing slash)
-define('ADMIN_EMAIL', 'craigbinn@gmail.com'); // Admin email for notifications
+define('SITE_NAME', env('SITE_NAME', 'BookingPro'));
+define('SITE_URL', env('SITE_URL', 'http://localhost'));
+define('ADMIN_EMAIL', env('ADMIN_EMAIL', 'admin@localhost'));
 
 // Security
-define('SESSION_TIMEOUT', 7200); // Session timeout in seconds (2 hours)
-define('PASSWORD_MIN_LENGTH', 8);
+define('SESSION_TIMEOUT', env('SESSION_TIMEOUT', 7200));
+define('PASSWORD_MIN_LENGTH', env('PASSWORD_MIN_LENGTH', 8));
+define('ENCRYPTION_KEY', env('ENCRYPTION_KEY', '')); // Used for CSRF tokens
 
 // Timezone
 date_default_timezone_set('UTC'); // Change to your timezone
 
-// Error Reporting (set to 0 in production)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Error Reporting (controlled by APP_ENV)
+$appEnv = env('APP_ENV', 'production');
+if ($appEnv === 'development') {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('log_errors', 1);
+    ini_set('error_log', __DIR__ . '/logs/error.log');
+} else {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 0);
+    ini_set('log_errors', 1);
+    ini_set('error_log', __DIR__ . '/logs/error.log');
+}
 
 // Email Configuration (for sending notifications)
-define('SMTP_ENABLED', false); // Set to true if you want to use SMTP
-define('SMTP_HOST', 'smtp.yourdomain.com');
-define('SMTP_PORT', 587);
-define('SMTP_USER', 'noreply@yourdomain.com');
-define('SMTP_PASS', 'your_smtp_password');
-define('SMTP_FROM_EMAIL', 'noreply@chores.to');
-define('SMTP_FROM_NAME', 'Chores');
+define('SMTP_ENABLED', env('SMTP_ENABLED', false));
+define('SMTP_HOST', env('SMTP_HOST', 'smtp.yourdomain.com'));
+define('SMTP_PORT', env('SMTP_PORT', 587));
+define('SMTP_USER', env('SMTP_USER', ''));
+define('SMTP_PASS', env('SMTP_PASS', ''));
+define('SMTP_FROM_EMAIL', env('SMTP_FROM_EMAIL', 'noreply@localhost'));
+define('SMTP_FROM_NAME', env('SMTP_FROM_NAME', 'BookingPro'));
 
 // Payment Integration (Optional)
-define('STRIPE_ENABLED', false);
-define('STRIPE_PUBLISHABLE_KEY', 'pk_test_xxxxx');
-define('STRIPE_SECRET_KEY', 'sk_test_xxxxx');
+define('STRIPE_ENABLED', env('STRIPE_ENABLED', false));
+define('STRIPE_PUBLISHABLE_KEY', env('STRIPE_PUBLISHABLE_KEY', ''));
+define('STRIPE_SECRET_KEY', env('STRIPE_SECRET_KEY', ''));
+define('STRIPE_WEBHOOK_SECRET', env('STRIPE_WEBHOOK_SECRET', ''));
 
 // Features
-define('ALLOW_REGISTRATION', true); // Allow new businesses to register
-define('REQUIRE_EMAIL_VERIFICATION', false); // Require email verification
-define('DEMO_MODE', false); // Set to true to disable certain actions
+define('ALLOW_REGISTRATION', env('ALLOW_REGISTRATION', true));
+define('REQUIRE_EMAIL_VERIFICATION', env('REQUIRE_EMAIL_VERIFICATION', false));
+define('DEMO_MODE', env('DEMO_MODE', false))
 
 ?>
