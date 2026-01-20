@@ -1,22 +1,22 @@
 # BookingPro - Zero Commission Booking Platform
 
-A transparent, self-hosted booking platform built as a superior alternative to Fresha. **No commission fees. No hidden costs. Full control.**
+A transparent, self-hosted booking platform built for businesses who want full control. **No commission fees. No hidden costs. Full control.**
 
-## 🎯 Why BookingPro Over Fresha?
+## 🎯 Why BookingPro?
 
-Based on extensive research of Fresha's pain points in 2025-2026, BookingPro fixes everything wrong with commercial booking platforms:
+Built to address common pain points in commercial booking platforms, BookingPro puts your business first:
 
 ### ✅ Our Advantages
 
-| Feature | Fresha | BookingPro |
+| Feature | Typical Platforms | BookingPro |
 |---------|--------|------------|
-| **Commission** | 20% "marketplace fee" | **0% - You keep everything** |
-| **Client Tracking** | Charges for returning clients | **Smart recognition, no false charges** |
+| **Commission** | Up to 20% marketplace fees | **0% - You keep everything** |
+| **Client Tracking** | May charge for returning clients | **Smart recognition, no false charges** |
 | **Customization** | Limited templates | **Full branding control** |
 | **Hidden Fees** | SMS charges, rising costs | **100% transparent** |
-| **Data Ownership** | They control your data | **You own everything** |
-| **Pricing Changes** | "Free" then adds fees | **Honest from day one** |
-| **Support** | Dismissive, no complaints process | **Community supported** |
+| **Data Ownership** | Platform controls your data | **You own everything** |
+| **Pricing Changes** | May add fees over time | **Honest from day one** |
+| **Support** | Often limited or automated | **Community supported** |
 | **Payment Options** | Locked to their system | **Any processor or cash** |
 
 ## 🚀 Features
@@ -149,9 +149,9 @@ Based on extensive research of Fresha's pain points in 2025-2026, BookingPro fix
 
 ## 💰 Cost Comparison
 
-### Fresha
-- **Base**: "Free" (with strings attached)
-- **Commission**: 20% on new clients (can be hundreds per month)
+### Typical Booking Platforms
+- **Base**: Often "free" with conditions
+- **Commission**: Up to 20% on bookings (can be hundreds per month)
 - **SMS**: Charged per message
 - **Hidden Fees**: Various additional costs
 - **Estimated Monthly**: $200-500+ depending on volume
@@ -163,7 +163,7 @@ Based on extensive research of Fresha's pain points in 2025-2026, BookingPro fix
 - **Commission**: **$0 FOREVER**
 - **Estimated Monthly**: **$5-15 total**
 
-**Savings**: $185-485+ per month = **$2,220-5,820+ per year!**
+**Potential Savings**: $185-485+ per month = **$2,220-5,820+ per year!**
 
 ## 🔒 Security Features
 
@@ -202,7 +202,7 @@ This is a self-hosted solution, which means:
 - **You have full control** - Modify anything you want
 - **No vendor lock-in** - Your data stays yours
 - **Community support** - Help from other users
-- **No support fees** - Unlike Fresha's paid support
+- **No support fees** - No expensive support packages required
 
 ## 🔄 Updates
 
@@ -231,15 +231,15 @@ This software is provided as-is for use on NameCheap shared hosting or similar P
 
 ## 🙏 Credits
 
-Built in response to widespread complaints about Fresha's:
-- Unfair 20% commission on ALL bookings
+Built to address common issues in the booking platform industry:
+- High commission fees on bookings
 - False "new client" charges for returning customers
 - Hidden and rising fees
-- Limited customization
-- Poor customer support
+- Limited customization options
+- Inadequate customer support
 - Lack of data ownership
 
-**BookingPro puts businesses first, not profits.**
+**BookingPro puts businesses first.**
 
 ## 📝 Changelog
 
@@ -268,4 +268,4 @@ Built in response to widespread complaints about Fresha's:
 
 ---
 
-*Made with ❤️ for businesses tired of being nickel-and-dimed by Fresha*
+*Made with ❤️ for businesses who want to keep 100% of their revenue*

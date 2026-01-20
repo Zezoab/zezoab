@@ -52,14 +52,14 @@ if ($auth->isLoggedIn()) {
 
         <section id="features" class="features-section">
             <div class="container">
-                <h2 class="section-title">Why We're Better Than Fresha</h2>
-                <p class="section-subtitle">We fixed everything that's wrong with other booking platforms</p>
+                <h2 class="section-title">Why Choose <?php echo SITE_NAME; ?>?</h2>
+                <p class="section-subtitle">A booking platform built for your success</p>
 
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">💰</div>
                         <h3>Zero Commission Forever</h3>
-                        <p>Unlike Fresha's 20% "marketplace fee", we charge ZERO commission. Ever. You keep 100% of your revenue. No tricks, no hidden fees.</p>
+                        <p>We charge ZERO commission. Ever. You keep 100% of your revenue. No tricks, no hidden fees, no marketplace fees.</p>
                     </div>
 
                     <div class="feature-card">
@@ -109,26 +109,26 @@ if ($auth->isLoggedIn()) {
 
         <section class="comparison-section">
             <div class="container">
-                <h2 class="section-title">Fresha vs <?php echo SITE_NAME; ?></h2>
+                <h2 class="section-title">Other Platforms vs <?php echo SITE_NAME; ?></h2>
 
                 <div class="comparison-table">
                     <table>
                         <thead>
                             <tr>
                                 <th>Feature</th>
-                                <th>Fresha</th>
+                                <th>Typical Platforms</th>
                                 <th><?php echo SITE_NAME; ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Commission on bookings</td>
-                                <td class="bad">20% "marketplace fee"</td>
+                                <td class="bad">Up to 20% marketplace fees</td>
                                 <td class="good">0% - You keep everything</td>
                             </tr>
                             <tr>
                                 <td>Client tracking accuracy</td>
-                                <td class="bad">Charges for returning clients</td>
+                                <td class="bad">May charge for returning clients</td>
                                 <td class="good">Smart recognition system</td>
                             </tr>
                             <tr>
@@ -143,12 +143,12 @@ if ($auth->isLoggedIn()) {
                             </tr>
                             <tr>
                                 <td>Data ownership</td>
-                                <td class="bad">They control your data</td>
+                                <td class="bad">Platform controls your data</td>
                                 <td class="good">You own everything</td>
                             </tr>
                             <tr>
                                 <td>Customer support</td>
-                                <td class="bad">Dismissive, no complaints process</td>
+                                <td class="bad">Often limited or automated</td>
                                 <td class="good">Responsive and helpful</td>
                             </tr>
                             <tr>
@@ -158,7 +158,7 @@ if ($auth->isLoggedIn()) {
                             </tr>
                             <tr>
                                 <td>Pricing changes</td>
-                                <td class="bad">"Lifetime free" then adds fees</td>
+                                <td class="bad">May add fees over time</td>
                                 <td class="good">Honest from day one</td>
                             </tr>
                         </tbody>
@@ -170,7 +170,7 @@ if ($auth->isLoggedIn()) {
         <section class="cta-section">
             <div class="container">
                 <h2>Ready to Take Control?</h2>
-                <p>Join businesses who are tired of being nickel-and-dimed by Fresha</p>
+                <p>Join businesses who want to keep 100% of their revenue</p>
                 <a href="register.php" class="btn btn-primary btn-large">Get Started - It's Free</a>
                 <p class="cta-note">No credit card required. Setup in 5 minutes.</p>
             </div>

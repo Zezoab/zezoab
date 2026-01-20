@@ -397,10 +397,10 @@ $paymentMethods = $db->fetchAll(
             <div class="highlight-card" style="margin-top: 2rem;">
                 <h2>💰 Zero Commission Savings</h2>
                 <p><strong>Total Revenue This Period:</strong> <?php echo formatCurrency($revenueStats['total_revenue'] ?? 0, $business['currency']); ?></p>
-                <p><strong>If you were using Fresha (20% commission):</strong> <?php echo formatCurrency(($revenueStats['total_revenue'] ?? 0) * 0.20, $business['currency']); ?> in fees</p>
+                <p><strong>If you were using a typical platform (20% commission):</strong> <?php echo formatCurrency(($revenueStats['total_revenue'] ?? 0) * 0.20, $business['currency']); ?> in fees</p>
                 <p><strong>Your Savings:</strong> <?php echo formatCurrency(($revenueStats['total_revenue'] ?? 0) * 0.20, $business['currency']); ?> kept in YOUR pocket!</p>
                 <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.9;">
-                    With BookingPro, you keep 100% of your revenue. No marketplace fees. No commission. Ever.
+                    With <?php echo SITE_NAME; ?>, you keep 100% of your revenue. No marketplace fees. No commission. Ever.
                 </p>
             </div>
         </div>

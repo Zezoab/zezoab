@@ -224,15 +224,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <!-- Branding & Customization (KEY IMPROVEMENT OVER FRESHA) -->
+            <!-- Branding & Customization -->
             <div class="card">
                 <div class="card-header">
                     <h2>🎨 Branding & Customization</h2>
-                    <span class="badge badge-success">UNLIMITED - Unlike Fresha!</span>
+                    <span class="badge badge-success">UNLIMITED</span>
                 </div>
                 <div class="card-body">
                     <div class="info-banner">
-                        <strong>Full Control:</strong> Unlike Fresha's limited customization, you can fully brand your booking page to match your business identity!
+                        <strong>Full Control:</strong> Fully customize and brand your booking page to match your business identity!
                     </div>
 
                     <form method="POST" action="" enctype="multipart/form-data" class="form">
@@ -359,13 +359,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="card-body">
                     <div class="pricing-info">
                         <h3>Zero Commission Forever</h3>
-                        <p><strong>You keep 100% of your revenue.</strong> No 20% "marketplace fees" like Fresha charges.</p>
+                        <p><strong>You keep 100% of your revenue.</strong> No marketplace fees or commission charges.</p>
                         <p><strong>Your costs:</strong></p>
                         <ul>
                             <li>✅ Domain & hosting (typically $3-10/month)</li>
                             <li>✅ That's it. No hidden fees.</li>
                         </ul>
-                        <p class="text-muted">Compare this to Fresha's 20% commission that can cost hundreds per month!</p>
+                        <p class="text-muted">Unlike other platforms that charge up to 20% commission, you keep everything you earn!</p>
                     </div>
                 </div>
             </div>

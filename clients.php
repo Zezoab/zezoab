@@ -243,7 +243,7 @@ if ($action === 'list') {
 
                 <div class="info-card">
                     <h3>✅ Accurate Client Tracking</h3>
-                    <p>Unlike Fresha's broken client recognition system, our smart tracking correctly identifies returning clients by email AND phone number. No more false "new client" marketplace fees!</p>
+                    <p>Our smart tracking correctly identifies returning clients by email AND phone number, ensuring accurate client recognition and preventing false "new client" charges.</p>
                 </div>
 
             <?php elseif ($action === 'view' && $client): ?>

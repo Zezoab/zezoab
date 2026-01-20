@@ -267,7 +267,7 @@ if (isset($_GET['edit'])) {
 
             <div class="info-card">
                 <h3>💡 Pro Tip</h3>
-                <p>Unlike Fresha, we don't charge you commission on your services. Set prices that work for YOUR business, and keep 100% of what you earn!</p>
+                <p>We don't charge you commission on your services. Set prices that work for YOUR business, and keep 100% of what you earn!</p>
             </div>
         </div>
     </main>
