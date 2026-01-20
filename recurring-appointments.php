@@ -126,7 +126,7 @@ $services = $db->fetchAll(
 
             <!-- Info Banner -->
             <div class="info-banner">
-                <strong>🔄 Auto-Booking:</strong> Unlike Square's limited recurring options, our system automatically creates appointments based on your pattern. Perfect for regular clients!
+                <strong>🔄 Auto-Booking:</strong> Unlike typical platforms with limited recurring options, our system automatically creates appointments based on your pattern. Perfect for regular clients!
             </div>
 
             <!-- Create Form (Hidden by default) -->
@@ -334,12 +334,12 @@ $services = $db->fetchAll(
             <!-- Feature Comparison -->
             <div class="card">
                 <div class="card-header">
-                    <h2>Why Our Recurring System Beats Square</h2>
+                    <h2>Why Our Recurring System Beats the Competition</h2>
                 </div>
                 <div class="card-body">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
                         <div>
-                            <h4>❌ Square Recurring</h4>
+                            <h4>❌ Typical Platforms</h4>
                             <ul>
                                 <li>Basic weekly only</li>
                                 <li>Limited flexibility</li>

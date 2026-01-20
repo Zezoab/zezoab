@@ -1,8 +1,8 @@
 -- Advanced Features Database Schema
--- Features that improve upon Square's limitations
+-- Features that improve upon typical platforms's limitations
 
 -- ============================================
--- 1. RECURRING APPOINTMENTS (Better than Square)
+-- 1. RECURRING APPOINTMENTS (Better than typical platforms)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `recurring_appointments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `recurring_appointments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 2. WAITLIST MANAGEMENT (Better than Square)
+-- 2. WAITLIST MANAGEMENT (Better than typical platforms)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `waitlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `waitlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 3. PACKAGES & MEMBERSHIPS (Better than Square)
+-- 3. PACKAGES & MEMBERSHIPS (Better than typical platforms)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `packages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `client_packages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 4. LOYALTY & REWARDS SYSTEM (Better than Square)
+-- 4. LOYALTY & REWARDS SYSTEM (Better than typical platforms)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `loyalty_points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `loyalty_rewards` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 5. MULTI-SERVICE BOOKINGS (Square limitation fix)
+-- 5. MULTI-SERVICE BOOKINGS (typical platforms limitation fix)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `appointment_services` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `appointment_services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 6. GROUP CLASSES/APPOINTMENTS (Square limitation fix)
+-- 6. GROUP CLASSES/APPOINTMENTS (typical platforms limitation fix)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `group_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `class_participants` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 7. CUSTOMIZABLE MESSAGE TEMPLATES (Square can't edit messages)
+-- 7. CUSTOMIZABLE MESSAGE TEMPLATES (typical platforms can't edit messages)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `message_templates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `message_templates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
--- 8. GIFT CERTIFICATES (Better than Square)
+-- 8. GIFT CERTIFICATES (Better than typical platforms)
 -- ============================================
 CREATE TABLE IF NOT EXISTS `gift_certificates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

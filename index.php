@@ -109,7 +109,7 @@ if ($auth->isLoggedIn()) {
 
         <section class="comparison-section">
             <div class="container">
-                <h2 class="section-title">Square vs Typical Platforms vs <?php echo SITE_NAME; ?></h2>
+                <h2 class="section-title">How We Compare to Major Platforms</h2>
                 <p class="section-subtitle">See how we stack up against the competition</p>
 
                 <div class="comparison-table">
@@ -117,15 +117,15 @@ if ($auth->isLoggedIn()) {
                         <thead>
                             <tr>
                                 <th>Feature</th>
-                                <th>Square</th>
-                                <th>Others</th>
+                                <th>Platform A</th>
+                                <th>Platform B</th>
                                 <th><?php echo SITE_NAME; ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Transaction Fees</td>
-                                <td class="bad">2.6-3.5% + $0.15-0.30</td>
+                                <td class="bad">2.6-3.5% + per transaction</td>
                                 <td class="bad">Up to 20% marketplace fees</td>
                                 <td class="good">0% - You keep everything</td>
                             </tr>
@@ -149,7 +149,7 @@ if ($auth->isLoggedIn()) {
                             </tr>
                             <tr>
                                 <td>Calendar Integration</td>
-                                <td class="bad">Google Calendar only</td>
+                                <td class="bad">Single calendar only</td>
                                 <td class="bad">Limited options</td>
                                 <td class="good">Export to any calendar (iCal, etc.)</td>
                             </tr>
@@ -179,13 +179,13 @@ if ($auth->isLoggedIn()) {
                             </tr>
                             <tr>
                                 <td>Data Ownership</td>
-                                <td class="bad">Square controls your data</td>
+                                <td class="bad">Platform controls your data</td>
                                 <td class="bad">Platform controls data</td>
                                 <td class="good">You own everything</td>
                             </tr>
                             <tr>
                                 <td>Customer Support</td>
-                                <td class="bad">No weekend support, slow</td>
+                                <td class="bad">Limited availability</td>
                                 <td class="bad">Often automated</td>
                                 <td class="good">Community + full control</td>
                             </tr>
@@ -197,13 +197,13 @@ if ($auth->isLoggedIn()) {
                             </tr>
                             <tr>
                                 <td>Payment Flexibility</td>
-                                <td class="bad">Locked to Square</td>
+                                <td class="bad">Locked to platform</td>
                                 <td class="bad">Platform-specific</td>
                                 <td class="good">Any processor or cash</td>
                             </tr>
                             <tr>
-                                <td>App Stability</td>
-                                <td class="bad">Reported crashes</td>
+                                <td>Platform Stability</td>
+                                <td class="bad">App issues reported</td>
                                 <td class="bad">Varies</td>
                                 <td class="good">Reliable web-based</td>
                             </tr>
@@ -215,12 +215,12 @@ if ($auth->isLoggedIn()) {
                     <h3 style="margin-bottom: 1rem;">Real Cost Comparison</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: center;">
                         <div>
-                            <h4 style="color: var(--text-secondary);">Square</h4>
+                            <h4 style="color: var(--text-secondary);">Platform A</h4>
                             <p style="font-size: 1.75rem; font-weight: 700; color: var(--danger-color); margin: 0.5rem 0;">$500-1000+</p>
                             <p style="font-size: 0.875rem; color: var(--text-muted);">per month with fees</p>
                         </div>
                         <div>
-                            <h4 style="color: var(--text-secondary);">Others</h4>
+                            <h4 style="color: var(--text-secondary);">Platform B</h4>
                             <p style="font-size: 1.75rem; font-weight: 700; color: var(--danger-color); margin: 0.5rem 0;">$200-500+</p>
                             <p style="font-size: 0.875rem; color: var(--text-muted);">per month with fees</p>
                         </div>
