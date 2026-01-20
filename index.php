@@ -109,60 +109,127 @@ if ($auth->isLoggedIn()) {
 
         <section class="comparison-section">
             <div class="container">
-                <h2 class="section-title">Other Platforms vs <?php echo SITE_NAME; ?></h2>
+                <h2 class="section-title">Square vs Typical Platforms vs <?php echo SITE_NAME; ?></h2>
+                <p class="section-subtitle">See how we stack up against the competition</p>
 
                 <div class="comparison-table">
                     <table>
                         <thead>
                             <tr>
                                 <th>Feature</th>
-                                <th>Typical Platforms</th>
+                                <th>Square</th>
+                                <th>Others</th>
                                 <th><?php echo SITE_NAME; ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Commission on bookings</td>
+                                <td>Transaction Fees</td>
+                                <td class="bad">2.6-3.5% + $0.15-0.30</td>
                                 <td class="bad">Up to 20% marketplace fees</td>
                                 <td class="good">0% - You keep everything</td>
                             </tr>
                             <tr>
-                                <td>Client tracking accuracy</td>
+                                <td>Monthly Cost</td>
+                                <td class="bad">$29/month per location</td>
+                                <td class="bad">$50-200+/month</td>
+                                <td class="good">$3-10/month (hosting only)</td>
+                            </tr>
+                            <tr>
+                                <td>Multi-Location</td>
+                                <td class="bad">$29 per location</td>
+                                <td class="bad">Extra fees per location</td>
+                                <td class="good">Unlimited, no extra cost</td>
+                            </tr>
+                            <tr>
+                                <td>Branding Customization</td>
+                                <td class="bad">Limited templates</td>
+                                <td class="bad">Basic customization</td>
+                                <td class="good">Full control - colors, logo, design</td>
+                            </tr>
+                            <tr>
+                                <td>Calendar Integration</td>
+                                <td class="bad">Google Calendar only</td>
+                                <td class="bad">Limited options</td>
+                                <td class="good">Export to any calendar (iCal, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td>Advanced Scheduling</td>
+                                <td class="bad">Basic recurring only</td>
+                                <td class="bad">Limited patterns</td>
+                                <td class="good">Biweekly, exceptions, date ranges</td>
+                            </tr>
+                            <tr>
+                                <td>Client Tracking</td>
                                 <td class="bad">May charge for returning clients</td>
-                                <td class="good">Smart recognition system</td>
+                                <td class="bad">Unreliable recognition</td>
+                                <td class="good">Smart email + phone matching</td>
                             </tr>
                             <tr>
-                                <td>Booking page customization</td>
-                                <td class="bad">Limited, templated</td>
-                                <td class="good">Fully customizable branding</td>
+                                <td>Group Classes</td>
+                                <td class="bad">Limited support</td>
+                                <td class="bad">Extra tier required</td>
+                                <td class="good">Built-in (coming soon)</td>
                             </tr>
                             <tr>
-                                <td>Hidden fees</td>
-                                <td class="bad">SMS charges, rising costs</td>
-                                <td class="good">Transparent, predictable</td>
+                                <td>Reporting & Analytics</td>
+                                <td class="bad">Basic only</td>
+                                <td class="bad">Limited insights</td>
+                                <td class="good">Comprehensive analytics</td>
                             </tr>
                             <tr>
-                                <td>Data ownership</td>
-                                <td class="bad">Platform controls your data</td>
+                                <td>Data Ownership</td>
+                                <td class="bad">Square controls your data</td>
+                                <td class="bad">Platform controls data</td>
                                 <td class="good">You own everything</td>
                             </tr>
                             <tr>
-                                <td>Customer support</td>
-                                <td class="bad">Often limited or automated</td>
-                                <td class="good">Responsive and helpful</td>
+                                <td>Customer Support</td>
+                                <td class="bad">No weekend support, slow</td>
+                                <td class="bad">Often automated</td>
+                                <td class="good">Community + full control</td>
                             </tr>
                             <tr>
-                                <td>Payment processors</td>
-                                <td class="bad">Locked to their system</td>
-                                <td class="good">Use any processor or cash</td>
+                                <td>SMS Customization</td>
+                                <td class="bad">Can't edit messages</td>
+                                <td class="bad">Pay per message</td>
+                                <td class="good">Fully customizable templates</td>
                             </tr>
                             <tr>
-                                <td>Pricing changes</td>
-                                <td class="bad">May add fees over time</td>
-                                <td class="good">Honest from day one</td>
+                                <td>Payment Flexibility</td>
+                                <td class="bad">Locked to Square</td>
+                                <td class="bad">Platform-specific</td>
+                                <td class="good">Any processor or cash</td>
+                            </tr>
+                            <tr>
+                                <td>App Stability</td>
+                                <td class="bad">Reported crashes</td>
+                                <td class="bad">Varies</td>
+                                <td class="good">Reliable web-based</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center; padding: 2rem; background: var(--bg-tertiary); border-radius: var(--border-radius);">
+                    <h3 style="margin-bottom: 1rem;">Real Cost Comparison</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: center;">
+                        <div>
+                            <h4 style="color: var(--text-secondary);">Square</h4>
+                            <p style="font-size: 1.75rem; font-weight: 700; color: var(--danger-color); margin: 0.5rem 0;">$500-1000+</p>
+                            <p style="font-size: 0.875rem; color: var(--text-muted);">per month with fees</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--text-secondary);">Others</h4>
+                            <p style="font-size: 1.75rem; font-weight: 700; color: var(--danger-color); margin: 0.5rem 0;">$200-500+</p>
+                            <p style="font-size: 0.875rem; color: var(--text-muted);">per month with fees</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--text-secondary);"><?php echo SITE_NAME; ?></h4>
+                            <p style="font-size: 1.75rem; font-weight: 700; color: var(--success-color); margin: 0.5rem 0;">$5-15</p>
+                            <p style="font-size: 0.875rem; color: var(--text-muted);">per month total</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

@@ -35,6 +35,22 @@
             <span class="nav-text">Reports</span>
         </a>
 
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-section-title">Advanced Features</div>
+
+        <a href="recurring-appointments.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'recurring-appointments.php' ? 'active' : ''; ?>">
+            <span class="nav-icon">🔄</span>
+            <span class="nav-text">Recurring Appointments</span>
+        </a>
+
+        <a href="waitlist.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'waitlist.php' ? 'active' : ''; ?>">
+            <span class="nav-icon">⏳</span>
+            <span class="nav-text">Waitlist</span>
+        </a>
+
+        <div class="sidebar-divider"></div>
+
         <a href="settings.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : ''; ?>">
             <span class="nav-icon">⚙️</span>
             <span class="nav-text">Settings</span>
