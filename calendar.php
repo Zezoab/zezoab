@@ -52,6 +52,26 @@ $staffList = $db->fetchAll(
     [$businessId]
 );
 
+// Get staff exceptions for the month
+$staffExceptions = $db->fetchAll(
+    "SELECT sae.*, s.name as staff_name, s.color as staff_color
+     FROM staff_availability_exceptions sae
+     LEFT JOIN staff s ON sae.staff_id = s.id
+     WHERE s.business_id = ? AND sae.exception_date BETWEEN ? AND ?
+     ORDER BY sae.exception_date",
+    [$businessId, $startDate, $endDate]
+);
+
+// Organize exceptions by date
+$exceptionsByDate = [];
+foreach ($staffExceptions as $exc) {
+    $date = $exc['exception_date'];
+    if (!isset($exceptionsByDate[$date])) {
+        $exceptionsByDate[$date] = [];
+    }
+    $exceptionsByDate[$date][] = $exc;
+}
+
 // Navigation dates
 $prevMonth = $currentMonth - 1;
 $prevYear = $currentYear;
@@ -113,9 +133,17 @@ if ($nextMonth > 12) {
 
         .calendar-day {
             background-color: white;
-            min-height: 120px;
-            padding: 0.5rem;
+            min-height: 85px;
+            padding: 0.4rem;
             position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            background-color: #F9FAFB;
+            box-shadow: inset 0 0 0 2px var(--primary-color);
+            z-index: 1;
         }
 
         .calendar-day.other-month {
@@ -151,6 +179,7 @@ if ($nextMonth > 12) {
 
         .calendar-appointment:hover {
             opacity: 0.8;
+            transform: scale(1.02);
         }
 
         .appointment-time {
@@ -161,6 +190,184 @@ if ($nextMonth > 12) {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        /* Staff Exception Indicators */
+        .calendar-exception {
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            line-height: 1.2;
+            cursor: pointer;
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            border: 1px dashed;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: #EF4444;
+            color: #991B1B;
+        }
+
+        .calendar-exception.custom-hours {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+            color: #92400E;
+        }
+
+        .calendar-exception:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        .exception-icon {
+            font-size: 0.7rem;
+        }
+
+        .exception-staff {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        /* Day Detail Panel */
+        .day-detail-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s;
+            overflow-y: auto;
+        }
+
+        .day-detail-panel.open {
+            right: 0;
+        }
+
+        .detail-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            background: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .detail-header h3 {
+            margin: 0;
+            color: white;
+        }
+
+        .detail-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .detail-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .detail-content {
+            padding: 1.5rem;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section h4 {
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .detail-item {
+            padding: 0.75rem;
+            background: #F9FAFB;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid;
+        }
+
+        .detail-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-item-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .detail-item-time {
+            font-size: 0.813rem;
+            color: #6B7280;
+        }
+
+        .detail-item-meta {
+            font-size: 0.813rem;
+            color: #6B7280;
+            margin-top: 0.25rem;
+        }
+
+        .detail-empty {
+            text-align: center;
+            padding: 2rem;
+            color: #9CA3AF;
+        }
+
+        /* Overlay */
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .detail-overlay.show {
+            display: block;
+        }
+
+        /* More indicator */
+        .more-indicator {
+            font-size: 0.7rem;
+            color: #6B7280;
+            padding: 0.2rem 0.4rem;
+            background: #F3F4F6;
+            border-radius: 3px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .more-indicator:hover {
+            background: #E5E7EB;
         }
 
         .calendar-legend {
@@ -261,7 +468,7 @@ if ($nextMonth > 12) {
                                 $isToday = ($date === date('Y-m-d'));
                                 $dayClass = $isToday ? 'calendar-day today' : 'calendar-day';
 
-                                echo '<div class="' . $dayClass . '">';
+                                echo '<div class="' . $dayClass . '" onclick="showDayDetail(\'' . $date . '\')">';
                                 echo '<div class="day-number">' . $day . '</div>';
 
                                 // Show appointments for this day
@@ -278,11 +485,32 @@ if ($nextMonth > 12) {
                                         }
 
                                         $color = $apt['staff_color'] ?? '#3B82F6';
-                                        echo '<div class="calendar-appointment" style="border-color: ' . $color . ';" onclick="viewAppointment(' . $apt['id'] . ')">';
+                                        echo '<div class="calendar-appointment" style="border-color: ' . $color . ';" onclick="event.stopPropagation(); viewAppointment(' . $apt['id'] . ');">';
                                         echo '<div class="appointment-time">' . formatTime($apt['start_time']) . '</div>';
                                         echo '<div class="appointment-client">' . htmlspecialchars($apt['first_name'] . ' ' . $apt['last_name']) . '</div>';
                                         echo '</div>';
                                         $count++;
+                                    }
+                                    echo '</div>';
+                                }
+
+                                // Show exceptions for this day
+                                if (isset($exceptionsByDate[$date])) {
+                                    echo '<div class="day-appointments">';
+                                    $excCount = 0;
+                                    foreach ($exceptionsByDate[$date] as $exc) {
+                                        if ($excCount >= 2) {
+                                            $remaining = count($exceptionsByDate[$date]) - 2;
+                                            echo '<div class="more-indicator">+' . $remaining . ' exception' . ($remaining > 1 ? 's' : '') . '</div>';
+                                            break;
+                                        }
+
+                                        $excClass = $exc['exception_type'] === 'custom_hours' ? 'calendar-exception custom-hours' : 'calendar-exception';
+                                        echo '<div class="' . $excClass . '" onclick="event.stopPropagation(); showDayDetail(\'' . $date . '\');">';
+                                        echo '<span class="exception-icon">' . ($exc['exception_type'] === 'unavailable' ? '🚫' : '⏰') . '</span>';
+                                        echo '<span class="exception-staff">' . htmlspecialchars($exc['staff_name']) . '</span>';
+                                        echo '</div>';
+                                        $excCount++;
                                     }
                                     echo '</div>';
                                 }
@@ -362,10 +590,139 @@ if ($nextMonth > 12) {
         </div>
     </main>
 
+    <!-- Detail Panel Overlay -->
+    <div class="detail-overlay" onclick="closeDayDetail()"></div>
+
+    <!-- Day Detail Panel -->
+    <div class="day-detail-panel" id="dayDetailPanel">
+        <div class="detail-header">
+            <h3 id="detailDateTitle">Loading...</h3>
+            <button class="detail-close" onclick="closeDayDetail()">×</button>
+        </div>
+        <div class="detail-content" id="detailContent">
+            <div class="detail-empty">Loading...</div>
+        </div>
+    </div>
+
     <script>
+        // Calendar data for JavaScript
+        const appointmentsByDate = <?php echo json_encode($appointmentsByDate); ?>;
+        const exceptionsByDate = <?php echo json_encode($exceptionsByDate); ?>;
+
         function viewAppointment(id) {
             window.location.href = 'appointments.php?id=' + id;
         }
+
+        function showDayDetail(date) {
+            const panel = document.getElementById('dayDetailPanel');
+            const overlay = document.querySelector('.detail-overlay');
+            const titleEl = document.getElementById('detailDateTitle');
+            const contentEl = document.getElementById('detailContent');
+
+            // Format date for display
+            const dateObj = new Date(date + 'T00:00:00');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            titleEl.textContent = dateObj.toLocaleDateString('en-US', options);
+
+            // Build content
+            let html = '';
+
+            // Show appointments
+            if (appointmentsByDate[date] && appointmentsByDate[date].length > 0) {
+                html += '<div class="detail-section">';
+                html += '<h4>Appointments (' + appointmentsByDate[date].length + ')</h4>';
+                appointmentsByDate[date].forEach(apt => {
+                    const color = apt.staff_color || '#3B82F6';
+                    html += '<div class="detail-item" style="border-color: ' + color + ';">';
+                    html += '<div class="detail-item-header">';
+                    html += '<div class="detail-item-title">' + escapeHtml(apt.first_name + ' ' + apt.last_name) + '</div>';
+                    html += '<div class="detail-item-time">' + formatTime(apt.start_time) + '</div>';
+                    html += '</div>';
+                    html += '<div class="detail-item-meta">';
+                    html += escapeHtml(apt.service_name) + ' • ' + escapeHtml(apt.staff_name);
+                    html += '</div>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            // Show exceptions
+            if (exceptionsByDate[date] && exceptionsByDate[date].length > 0) {
+                html += '<div class="detail-section">';
+                html += '<h4>Staff Exceptions (' + exceptionsByDate[date].length + ')</h4>';
+                exceptionsByDate[date].forEach(exc => {
+                    const isUnavailable = exc.exception_type === 'unavailable';
+                    const color = isUnavailable ? '#EF4444' : '#F59E0B';
+                    const icon = isUnavailable ? '🚫' : '⏰';
+                    const typeLabel = isUnavailable ? 'Unavailable' : 'Custom Hours';
+
+                    html += '<div class="detail-item" style="border-color: ' + color + ';">';
+                    html += '<div class="detail-item-header">';
+                    html += '<div class="detail-item-title">' + icon + ' ' + escapeHtml(exc.staff_name) + '</div>';
+                    html += '<div class="detail-item-time">' + typeLabel + '</div>';
+                    html += '</div>';
+
+                    if (exc.exception_type === 'custom_hours' && exc.start_time && exc.end_time) {
+                        html += '<div class="detail-item-meta">';
+                        html += formatTime(exc.start_time) + ' - ' + formatTime(exc.end_time);
+                        html += '</div>';
+                    }
+
+                    if (exc.reason) {
+                        html += '<div class="detail-item-meta">';
+                        html += escapeHtml(exc.reason);
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            // If no data
+            if (html === '') {
+                html = '<div class="detail-empty">No appointments or exceptions on this day</div>';
+            }
+
+            contentEl.innerHTML = html;
+
+            // Show panel
+            panel.classList.add('open');
+            overlay.classList.add('show');
+        }
+
+        function closeDayDetail() {
+            const panel = document.getElementById('dayDetailPanel');
+            const overlay = document.querySelector('.detail-overlay');
+            panel.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            const [hours, minutes] = timeStr.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return displayHour + ':' + minutes + ' ' + ampm;
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Close panel with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDayDetail();
+            }
+        });
     </script>
 </body>
 </html>
